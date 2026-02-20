@@ -1,7 +1,3 @@
--- ==========================================
--- 究極のエモート発動システム (ハイエンド演出版)
--- ==========================================
-
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
@@ -9,7 +5,6 @@ local rootPart = character:WaitForChild("HumanoidRootPart")
 local camera = workspace.CurrentCamera
 local tweenService = game:GetService("TweenService")
 
--- --- 1. GUIの作成 (デザイン調整) ---
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "UltimateEmoteGui"
 screenGui.Parent = player:WaitForChild("PlayerGui")
@@ -50,13 +45,9 @@ label.BackgroundTransparency = 1
 label.Font = Enum.Font.Code
 label.Parent = frame
 
--- --- 2. 演出用関数 ---
-
--- パーティクル演出
 local function createUltimateEffect()
     local att = Instance.new("Attachment", rootPart)
     
-    -- 衝撃波
     local p1 = Instance.new("ParticleEmitter", att)
     p1.Texture = "rbxassetid://2430535539"
     p1.Color = ColorSequence.new(Color3.fromRGB(255, 0, 0), Color3.fromRGB(255, 255, 0))
@@ -66,7 +57,6 @@ local function createUltimateEffect()
     p1.Speed = NumberRange.new(30, 60)
     p1.SpreadAngle = Vector2.new(360, 360)
     
-    -- 足元のオーラ
     local p2 = Instance.new("ParticleEmitter", att)
     p2.Texture = "rbxassetid://6030229329"
     p2.Color = ColorSequence.new(Color3.fromRGB(0, 255, 255))
@@ -83,13 +73,10 @@ local function createUltimateEffect()
     att:Destroy()
 end
 
--- カメラ演出
 local function cinematicCamera()
     local originalFieldOfView = camera.FieldOfView
-    -- ズームイン
     tweenService:Create(camera, TweenInfo.new(0.2), {FieldOfView = 40}):Play()
     
-    -- 強烈な揺れ
     for i = 1, 20 do
         local offset = Vector3.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1)) * 0.5
         humanoid.CameraOffset = offset
@@ -100,12 +87,10 @@ local function cinematicCamera()
     tweenService:Create(camera, TweenInfo.new(0.5), {FieldOfView = originalFieldOfView}):Play()
 end
 
--- アニメーション設定 (もっと激しいダンス ID: 10714347743 などもおすすめ)
 local anim = Instance.new("Animation")
 anim.AnimationId = "rbxassetid://10714347743" 
 local track = humanoid:LoadAnimation(anim)
 
--- --- 3. メインロジック ---
 local cooldown = false
 
 button.MouseButton1Click:Connect(function()
@@ -116,15 +101,13 @@ button.MouseButton1Click:Connect(function()
     label.Text = "EXECUTING..."
     label.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- サウンド演出
     local s = Instance.new("Sound", rootPart)
-    s.SoundId = "rbxassetid://157833037" -- 溜め音
+    s.SoundId = "rbxassetid://157833037"
     s.Volume = 2
     s:Play()
 
-    task.wait(0.5) -- 少し溜める
+    task.wait(0.5)
     
-    -- 爆発音
     local s2 = Instance.new("Sound", rootPart)
     s2.SoundId = "rbxassetid://142376088" 
     s2.Volume = 1
@@ -135,7 +118,7 @@ button.MouseButton1Click:Connect(function()
     
     track:Play()
     track.TimePosition = 0.2
-    track:AdjustSpeed(1.2) -- 少し速くしてキレを出す
+    track:AdjustSpeed(1.2)
 
     track.Stopped:Wait()
     
